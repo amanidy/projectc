@@ -1,0 +1,63 @@
+.about-page {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.intro {
+  padding: 20px;
+}
+
+.mission {
+  background-color: #f7f7f7;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.features {
+  padding: 20px;
+}
+
+.features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.features li {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.features li:last-child {
+  border-bottom: none;
+}
+
+.features i {
+  font-size: 18px;
+  margin-right: 10px;
+  color: #666;
+}
+
+.footer {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  clear: both;
+}
