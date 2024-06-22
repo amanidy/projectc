@@ -243,9 +243,9 @@ const Explore = () => {
         </div>
       </div>
 
-      <button onClick={handleNotification}>Show Notification</button>
+      <button onClick={handleNotification} className='notification-btn'>Show Notification</button>
 
-      <button onClick={handleLogout}>Log Out</button>
+      <button onClick={handleLogout} className='logout-btn'>Log Out</button>
     </div>
   );
 }
