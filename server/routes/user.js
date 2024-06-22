@@ -7,11 +7,32 @@ import twilio from "twilio"
 import dotenv from "dotenv"
 import mongoose from "mongoose";
 import { Axios } from "axios";
+import bodyParser from "body-parser";
+import cors from "cors"
+
 
 dotenv.config()
     
     
 const router = express.Router();
+
+const corsOptions = {
+  origin: 'http://localhost:3000', // Allow requests from this origin
+  credentials: true, // Allow cookies and authorization headers
+};
+
+router.use(cors(corsOptions));
+
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({ extended: true }));
+
+// Example middleware to handle CORS if needed
+router.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
 
 
 
@@ -123,7 +144,7 @@ const verifyUser = async (req, res, next) => {
   
 }
 
-router.get('/verify',verifyUser, (req, res) => {
+router.post('/verify',verifyUser, (req, res) => {
   return res.json({status:true, message:"authorized"})
   
 })
@@ -184,41 +205,47 @@ const ChatMessage = mongoose.model('ChatMessage', chatMessageSchema);
 router.get('/search', async (req, res) => {
   try {
     const searchQuery = req.query.q;
-    const soilMoistureResponse = await Axios.get(`https://api.weatherbit.io/v2.0/soil/moisture`, {
+
+    // Example of handling soil moisture data
+    const soilMoistureResponse = await Axios.get('https://api.weatherbit.io/v2.0/soil/moisture', {
       params: {
         city: searchQuery,
-        country: '',
+        country: '', // Adjust as per your needs
         key: process.env.WEATHERBIT_API_KEY
       }
     });
 
-    const weatherDataResponse = await Axios.get(`http://api.openweathermap.org/data/2.5/forecast`, {
+    // Example of handling historical weather data
+    const weatherDataResponse = await Axios.get('http://api.openweathermap.org/data/2.5/forecast', {
       params: {
         q: `${searchQuery},Kenya`,
-        units: 'etric',
-        appid: OPENWEATHERMAP_API_KEY
+        units: 'metric',
+        appid: process.env.OPENWEATHERMAP_API_KEY
       }
     });
 
-    const weatherAlertsResponse = await Axios.get(`https://api.weatherbit.io/v2.0/alerts`, {
+    // Example of handling weather alerts
+    const weatherAlertsResponse = await Axios.get('https://api.weatherbit.io/v2.0/alerts', {
       params: {
         city: searchQuery,
-        country: '',
-        key: WEATHERBIT_API_KEY
+        country: '', // Adjust as per your needs
+        key: process.env.WEATHERBIT_API_KEY
       }
     });
 
-    const marketTrendsResponse = await Axios.get(`https://api.market-trends.com/v1/trends`, {
+    // Example of handling market trends
+    const marketTrendsResponse = await Axios.get('https://api.market-trends.com/v1/trends', {
       params: {
-        api_key: MARKET_TRENDS_API_KEY
+        api_key: process.env.MARKET_TRENDS_API_KEY
       }
     });
 
-    const weatherPredictionsResponse = await Axios.get(`http://api.openweathermap.org/data/2.5/forecast`, {
+    // Example of handling weather predictions
+    const weatherPredictionsResponse = await Axios.get('http://api.openweathermap.org/data/2.5/forecast', {
       params: {
         q: `${searchQuery},Kenya`,
-        units: 'etric',
-        appid: OPENWEATHERMAP_API_KEY
+        units: 'metric',
+        appid: process.env.OPENWEATHERMAP_API_KEY
       }
     });
 
@@ -236,6 +263,95 @@ router.get('/search', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch search data' });
   }
 });
+
+// Example route to handle soil moisture data separately
+router.post('/auth/weather-data', async (req, res) => {
+  try {
+    const weatherDataResponse = await Axios.get('http://api.openweathermap.org/data/2.5/forecast', {
+      params: {
+        q: 'Nairobi,Kenya',
+        units: 'metric',
+        appid: process.env.OPENWEATHERMAP_API_KEY
+      }
+    });
+    res.json(weatherDataResponse.data);
+  } catch (error) {
+    console.error('Error fetching weather data:', error);
+    res.status(500).json({ error: 'Failed to fetch weather data' });
+  }
+});
+
+// Endpoint to fetch weather alerts
+router.post('/weather-alerts', async (req, res) => {
+  try {
+    const weatherAlertsResponse = await Axios.get('https://api.weatherbit.io/v2.0/alerts', {
+      params: {
+        city: 'Nairobi',
+        country: 'Kenya',
+        key: process.env.WEATHERBIT_API_KEY
+      }
+    });
+    res.json(weatherAlertsResponse.data);
+  } catch (error) {
+    console.error('Error fetching weather alerts:', error);
+    res.status(500).json({ error: 'Failed to fetch weather alerts' });
+  }
+});
+
+// Endpoint to fetch market trends
+router.post('/market-trends', async (req, res) => {
+  try {
+    const marketTrendsResponse = await Axios.get('https://api.market-trends.com/v1/trends', {
+      params: {
+        api_key: process.env.MARKET_TRENDS_API_KEY
+      }
+    });
+    res.json(marketTrendsResponse.data);
+  } catch (error) {
+    console.error('Error fetching market trends:', error);
+    res.status(500).json({ error: 'Failed to fetch market trends' });
+  }
+});
+
+// Endpoint to fetch weather predictions
+router.post('/weather-predictions', async (req, res) => {
+  try {
+    const weatherPredictionsResponse = await Axios.get('http://api.openweathermap.org/data/2.5/forecast', {
+      params: {
+        q: 'Nairobi,Kenya',
+        units: 'metric',
+        appid: process.env.OPENWEATHERMAP_API_KEY
+      }
+    });
+    res.json(weatherPredictionsResponse.data);
+  } catch (error) {
+    console.error('Error fetching weather predictions:', error);
+    res.status(500).json({ error: 'Failed to fetch weather predictions' });
+  }
+});
+
+// Example route to handle soil moisture data separately
+router.post('/auth/soil-moisture', async (req, res) => {
+  try {
+    const { city, country } = req.body;
+
+    const soilMoistureResponse = await Axios.get('https://api.weatherbit.io/v2.0/soil/moisture', {
+      params: {
+        city,
+        country,
+        key: process.env.WEATHERBIT_API_KEY
+      }
+    });
+
+    res.json(soilMoistureResponse.data);
+  } catch (error) {
+    console.error('Error fetching soil moisture data:', error);
+    res.status(500).json({ error: 'Failed to fetch soil moisture data' });
+  }
+});
+
+
+
 
 // Chat Messages Routes
 router.post('/chat-messages', async (req, res) => {

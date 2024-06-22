@@ -1,122 +1,104 @@
-import React,{useEffect,useState} from 'react'
-import Axios from 'axios'
-import { useNavigate } from 'react-router-dom'
-import sampleCrops from './CropsData'
-import './Explore.css'
+
+
+import React, { useEffect, useState } from 'react';
+import Axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import sampleCrops from './CropsData';
+import './Explore.css';
 
 const Explore = () => {
-  const [soilMoistureData, setSoilMoistureData] = useState([])
-  const [historicalWeatherData,setHistoricalWeatherData] = useState([])
-  const [weatherAlerts,setWeatherAlerts] = useState([])
-  const [marketTrends,setMarketTrends] = useState([])
-  const [weatherPredictions,setWeatherPredictions] = useState([])
-  const [notification,setNotification] = useState('')
-  const [chatMessages,setChatMessages] = useState([])
-  const [newMessage,setNewMessage] = useState('')
-  const [crops,setCrops] = useState(sampleCrops)
-  const [selectedCrop, setSelectedCrop] = useState(null)
+  const [soilMoistureData, setSoilMoistureData] = useState([]);
+  const [historicalWeatherData, setHistoricalWeatherData] = useState([]);
+  const [weatherAlerts, setWeatherAlerts] = useState([]);
+  const [marketTrends, setMarketTrends] = useState([]);
+  const [weatherPredictions, setWeatherPredictions] = useState([]);
+  const [notification, setNotification] = useState('');
+  const [chatMessages, setChatMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
+  const [crops, setCrops] = useState(sampleCrops);
+  const [selectedCrop, setSelectedCrop] = useState(null);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState({});
   const [error, setError] = useState(null);
-  
-  error();
-
   const navigate = useNavigate();
-  Axios.defaults.withCredentials = true;
-  useEffect(() => {
 
+  Axios.defaults.withCredentials = true;
+
+  useEffect(() => {
     const fetchSearchResults = async () => {
       if (searchQuery) {
         try {
-          const response = await Axios.get('http://localhost:3000/search', {
+          const response = await Axios.get('http://localhost:5000/search', {
             params: {
               q: searchQuery
             }
           });
           setSearchResults(response.data);
-        } catch (error) {
+        } catch (error ) {
           setError(error.message);
+        
         }
       }
     };
 
-    fetchSearchResults();
-  
+    const fetchData = async () => {
+      try {
+        const soilMoistureResponse = await Axios.post('http://localhost:5000/auth/soil-moisture', {
+          city: 'Nairobi',
+          country: 'Kenya'
+        });
+        setSoilMoistureData(soilMoistureResponse.data);
 
-    //soil moisture
-    Axios.post('http://localhost:5000/soil-moisture', {
-      params: {
-        city: 'Nairobi',
-        country: 'Kenya'
-      }
-    })
-     .then(response => {
-        setSoilMoistureData(response.data);
-      })
-     .catch(error => {
-        console.error('Error fetching soil moisture data:', error);
-      });
+        
+        const historicalWeatherResponse = await Axios.post('http://localhost:5000/auth/weather-data');
+        setHistoricalWeatherData(historicalWeatherResponse.data);
 
-    Axios.post('http://localhost:5000/weather-data')
-     .then(response => {
-        setHistoricalWeatherData(response.data);
-      })
-     .catch(error => {
-        console.error('Error fetching weather data:', error);
-      });
+      
+        const weatherAlertsResponse = await Axios.post('http://localhost:5000/auth/weather-alerts', {
+          city: 'Nairobi',
+          country: 'Kenya'
+        });
+        setWeatherAlerts(weatherAlertsResponse.data);
 
-    Axios.post('http://localhost:5000/weather-alerts', {
-      params: {
-        city: 'Nairobi',
-        country: 'Kenya'
-      }
-    })
-     .then(response => {
-        setWeatherAlerts(response.data);
-      })
-     .catch(error => {
-        console.error('Error fetching weather alerts:', error);
-      });
-
-    Axios.post('http://localhost:5000/market-trends')
-     .then(response => {
-        setMarketTrends(response.data);
-      })
-     .catch(error => {
-        console.error('Error fetching market trends:', error);
-      });
-
-    Axios.post('http://localhost:5000/weather-predictions')
-     .then(response => {
-        setWeatherPredictions(response.data);
-      })
-     .catch(error => {
-        console.error('Error fetching weather predictions:', error);
-      });
     
+        const marketTrendsResponse = await Axios.post('http://localhost:5000/auth/market-trends');
+        setMarketTrends(marketTrendsResponse.data);
+
+        
+        const weatherPredictionsResponse = await Axios.post('http://localhost:5000/auth/weather-predictions');
+        setWeatherPredictions(weatherPredictionsResponse.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    
+    fetchSearchResults();
+    fetchData();
+
     const sampleChatMessages = [
-      { text: 'Hi,have you seen this page?', user: 'Arnold', timestamp: new Date('2024-06-21T10:15:00') },
-      { text: 'Hello,yes!', user: 'John', timestamp: new Date('2024-06-21T10:16:00') },
+      { text: 'Hi, have you seen this page?', user: 'Arnold', timestamp: new Date('2024-06-21T10:15:00') },
+      { text: 'Hello, yes!', user: 'John', timestamp: new Date('2024-06-21T10:16:00') },
     ];
     setChatMessages(sampleChatMessages);
 
     setCrops(sampleCrops);
 
-    Axios.post('http://localhost:5000/auth/verify')
+    Axios.post('http://localhost:5000/auth/verify', {}, { withCredentials: true })
       .then(res => {
-        if (res.data.status) {
-        
-        } else {
-          navigate("/agrisense")
+        if (!res.data.status) {
+          navigate("/agrisense");
         }
-      }).catch(err => {
-        console.log(err)
       })
+      .catch(err => {
+        console.log(err);
+      });
+
   }, [searchQuery, navigate]);
- 
+
   const handleNotification = () => {
-    setNotification('Sample Notification: Hi,You have a new notification')
+    setNotification('Sample Notification: Hi, You have a new notification');
   };
 
   const handleSendMessage = () => {
@@ -130,19 +112,18 @@ const Explore = () => {
   const handleCropSelection = (crop) => {
     setSelectedCrop(crop);
   };
-  
 
-  Axios.defaults.withCredentials = true;
   const handleLogout = () => {
     Axios.get("http://localhost:5000/auth/logout")
       .then(res => {
         if (res.data.status) {
-          navigate("/login")
-        
-      }
-    })
-  
-}
+          navigate("/login");
+        }
+      })
+      .catch(error => {
+        console.error('Error logging out:', error);
+      });
+  };
 
   const handleSearch = (event) => {
     setSearchQuery(event.target.value);
@@ -153,8 +134,8 @@ const Explore = () => {
   };
 
   return (
-    <div className='expore-page'>
-     <form onSubmit={handleSubmit} className='search-form'>
+    <div className='explore-page'>
+      <form onSubmit={handleSubmit} className='search-form'>
         <input
           type="text"
           value={searchQuery}
@@ -163,11 +144,10 @@ const Explore = () => {
           className='search-input'
         />
         <button type="submit" className='search-button'>Search</button>
-      </form> 
-      
-      
-     {notification && <div className="notification">{notification}</div>}
-      
+      </form>
+
+      {notification && <div className="notification">{notification}</div>}
+
       <h2>Key Features</h2>
       <ul>
         <li>
@@ -263,11 +243,11 @@ const Explore = () => {
         </div>
       </div>
 
-      <button onClick={handleNotification}>Show Notification</button> 
-      
-    <button onClick={handleLogout}>Log Out</button>
+      <button onClick={handleNotification}>Show Notification</button>
+
+      <button onClick={handleLogout}>Log Out</button>
     </div>
-  )
+  );
 }
 
 export default Explore;
