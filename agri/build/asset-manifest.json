@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/agrisense/static/css/main.2b1f95b0.css",
-    "main.js": "/agrisense/static/js/main.9c010bd0.js",
+    "main.css": "/agrisense/static/css/main.1174b011.css",
+    "main.js": "/agrisense/static/js/main.02ad8546.js",
     "static/js/453.0e9c1d77.chunk.js": "/agrisense/static/js/453.0e9c1d77.chunk.js",
     "static/media/agrivideo.mp4": "/agrisense/static/media/agrivideo.3ab229b9a8af3a80b8ef.mp4",
     "static/media/pexels-skyriusmarketing-2129819.jpg": "/agrisense/static/media/pexels-skyriusmarketing-2129819.128fafef23e08e08d7f1.jpg",
@@ -17,12 +17,12 @@
     "static/media/fa-v4compatibility.ttf": "/agrisense/static/media/fa-v4compatibility.c8e090db312b0bea2aa2.ttf",
     "static/media/fa-v4compatibility.woff2": "/agrisense/static/media/fa-v4compatibility.cf7f5903d06b79ad60f1.woff2",
     "index.html": "/agrisense/index.html",
-    "main.2b1f95b0.css.map": "/agrisense/static/css/main.2b1f95b0.css.map",
-    "main.9c010bd0.js.map": "/agrisense/static/js/main.9c010bd0.js.map",
+    "main.1174b011.css.map": "/agrisense/static/css/main.1174b011.css.map",
+    "main.02ad8546.js.map": "/agrisense/static/js/main.02ad8546.js.map",
     "453.0e9c1d77.chunk.js.map": "/agrisense/static/js/453.0e9c1d77.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.2b1f95b0.css",
-    "static/js/main.9c010bd0.js"
+    "static/css/main.1174b011.css",
+    "static/js/main.02ad8546.js"
   ]
 }
