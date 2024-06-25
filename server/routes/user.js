@@ -206,13 +206,14 @@ const ChatMessage = mongoose.model('ChatMessage', chatMessageSchema);
 router.get('/search', async (req, res) => {
   try {
     const searchQuery = req.query.q;
-
     // Example of handling soil moisture data
-    const soilMoistureResponse = await Axios.get('https://api.weatherbit.io/v2.0/soil/moisture', {
+    const soilMoistureResponse = await Axios.get('https://api.weatherbit.io/v2.0/history/agweather', {
       params: {
-        city: searchQuery,
-        country: '', // Adjust as per your needs
-        key: process.env.WEATHERBIT_API_KEY
+        start_date,
+        end_date,
+        units,
+        tp,
+        key: process.env.WEATHERBIT_API_KEY,
       }
     });
 
@@ -334,13 +335,15 @@ router.post('/weather-predictions', async (req, res) => {
 // Example route to handle soil moisture data separately
 router.post('/soil-moisture', async (req, res) => {
   try {
-    const { city, country } = req.body;
+    const {start_date,end_date,units,tp } = req.body;
 
-    const soilMoistureResponse = await Axios.get('https://api.weatherbit.io/v2.0/soil/moisture', {
+    const soilMoistureResponse = await Axios.get('https://api.weatherbit.io/v2.0/history/agweather', {
       params: {
-        city,
-        country,
-        key: process.env.WEATHERBIT_API_KEY
+        start_date,
+       end_date,
+       units,
+       tp,
+    key: process.env.WEATHERBIT_API_KEY,
       }
     });
 

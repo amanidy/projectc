@@ -20,8 +20,10 @@ const Explore = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState({});
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+
+
 
   Axios.defaults.withCredentials = true;
 
@@ -35,8 +37,9 @@ const Explore = () => {
             }
           });
           setSearchResults(response.data);
-        } catch (error ) {
-          setError(error.message);
+        } catch (error) {
+          console.log('Error:')
+        
         
         }
       }
@@ -45,8 +48,10 @@ const Explore = () => {
     const fetchData = async () => {
       try {
         const soilMoistureResponse = await Axios.post('http://localhost:5000/auth/soil-moisture', {
-          city: 'Nairobi',
-          country: 'Kenya'
+          start_date: '2024-06-25',
+          end_date: '2024-07-01',
+          units: 'M',
+          tp:'daily'
         });
         setSoilMoistureData(soilMoistureResponse.data);
 
