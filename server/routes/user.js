@@ -6,7 +6,7 @@ import nodemailer from "nodemailer"
 import twilio from "twilio"
 import dotenv from "dotenv"
 import mongoose from "mongoose";
-import { Axios } from "axios";
+import  Axios  from "axios";
 import bodyParser from "body-parser";
 import cors from "cors"
 
@@ -332,7 +332,7 @@ router.post('/weather-predictions', async (req, res) => {
 });
 
 // Example route to handle soil moisture data separately
-router.post('/auth/soil-moisture', async (req, res) => {
+router.post('/soil-moisture', async (req, res) => {
   try {
     const { city, country } = req.body;
 
