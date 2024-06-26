@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -38,7 +36,7 @@ const Explore = () => {
           });
           setSearchResults(response.data);
         } catch (error) {
-          console.log('Error:')
+          console.log('Error:',error)
         
         
         }
@@ -50,13 +48,16 @@ const Explore = () => {
         const soilMoistureResponse = await Axios.post('http://localhost:5000/auth/soil-moisture', {
           start_date: '2024-06-25',
           end_date: '2024-07-01',
-          units: 'M',
-          tp:'daily'
+          lat: -1.286389,
+          lon:36.817223
         });
         setSoilMoistureData(soilMoistureResponse.data);
 
         
-        const historicalWeatherResponse = await Axios.post('http://localhost:5000/auth/weather-data');
+        const historicalWeatherResponse = await Axios.post('http://localhost:5000/auth/weather-data', {
+          lat: -1.286389,
+          lon:36.817223
+        });
         setHistoricalWeatherData(historicalWeatherResponse.data);
 
       
@@ -67,7 +68,9 @@ const Explore = () => {
         setWeatherAlerts(weatherAlertsResponse.data);
 
     
-        const marketTrendsResponse = await Axios.post('http://localhost:5000/auth/market-trends');
+        const marketTrendsResponse = await Axios.post('http://localhost:5000/auth/market-trends', {
+        rapidapi_Host: 'bloomberg-api.p.rapidapi.com'
+        });
         setMarketTrends(marketTrendsResponse.data);
 
         
@@ -78,7 +81,7 @@ const Explore = () => {
       }
     };
 
-    
+
     fetchSearchResults();
     fetchData();
 
@@ -160,9 +163,13 @@ const Explore = () => {
           Soil Moisture Analysis:
           <p>{searchResults.soilMoisture}</p>
           <ul>
-            {soilMoistureData.map((data, index) => (
-              <li key={index}>{data.soilMoistureLevel}%</li>
-            ))}
+            {Array.isArray(soilMoistureData) && soilMoistureData.length > 0 ? (
+    soilMoistureData.map((data, index) => (
+      <li key={index}>{data.soilMoistureLevel}%</li>
+    ))
+  ) : (
+    <li>No soil moisture data available</li>
+  )}
           </ul>
         </li>
         <li>
@@ -170,9 +177,13 @@ const Explore = () => {
           Historical Weather Data:
           <p>{searchResults.weatherData}</p>
           <ul>
-            {historicalWeatherData.map((data, index) => (
-              <li key={index}>{data.date}: {data.weatherCondition}</li>
-            ))}
+            {Array.isArray(historicalWeatherData) && historicalWeatherData.length > 0 ? (
+    historicalWeatherData.map((data, index) => (
+      <li key={index}>{data.historicalWeatherData}%</li>
+    ))
+  ) : (
+    <li>No historical weather  data available</li>
+  )}
           </ul>
         </li>
         <li>
@@ -180,9 +191,13 @@ const Explore = () => {
           Personalized Weather Alerts:
           <p>{searchResults.weatherAlerts}</p>
           <ul>
-            {weatherAlerts.map((alert, index) => (
-              <li key={index}>{alert.alertMessage}</li>
-            ))}
+            {Array.isArray(weatherAlerts) && weatherAlerts.length > 0 ? (
+    weatherAlerts.map((data, index) => (
+      <li key={index}>{data.weatherAlerts}%</li>
+    ))
+  ) : (
+    <li>No weather alerts data available</li>
+  )}
           </ul>
         </li>
         <li>

@@ -211,18 +211,18 @@ router.get('/search', async (req, res) => {
       params: {
         start_date,
         end_date,
-        units,
-        tp,
+        lat,
+        lon,
         key: process.env.WEATHERBIT_API_KEY,
       }
     });
 
     // Example of handling historical weather data
-    const weatherDataResponse = await Axios.get('http://api.openweathermap.org/data/2.5/forecast', {
+    const weatherDataResponse = await Axios.get('https://api.openweathermap.org/data/2.5/weather', {
       params: {
-        q: `${searchQuery},Kenya`,
-        units: 'metric',
-        appid: process.env.OPENWEATHERMAP_API_KEY
+          lat,
+          lon,
+          appid: process.env.openWeatherMapApiKey
       }
     });
 
@@ -236,9 +236,10 @@ router.get('/search', async (req, res) => {
     });
 
     // Example of handling market trends
-    const marketTrendsResponse = await Axios.get('https://api.market-trends.com/v1/trends', {
+    const marketTrendsResponse = await Axios.get('https://bloomberg-api.p.rapidapi.com/bloomberg/agriculture', {
       params: {
-        api_key: process.env.MARKET_TRENDS_API_KEY
+        rapidapi_Key:process.env.MARKET_TRENDS_API_KEY,
+        rapidapi_Host: 'bloomberg-api.p.rapidapi.com'
       }
     });
 
@@ -267,13 +268,14 @@ router.get('/search', async (req, res) => {
 });
 
 // Example route to handle soil moisture data separately
-router.post('/auth/weather-data', async (req, res) => {
+router.post('/weather-data', async (req, res) => {
   try {
-    const weatherDataResponse = await Axios.get('http://api.openweathermap.org/data/2.5/forecast', {
+    const {lat,lon } = req.body;
+    const weatherDataResponse = await Axios.get('https://api.openweathermap.org/data/2.5/weather', {
       params: {
-        q: 'Nairobi,Kenya',
-        units: 'metric',
-        appid: process.env.OPENWEATHERMAP_API_KEY
+          lat,
+          lon,
+          appid: process.env.openWeatherMapApiKey
       }
     });
     res.json(weatherDataResponse.data);
@@ -303,9 +305,10 @@ router.post('/weather-alerts', async (req, res) => {
 // Endpoint to fetch market trends
 router.post('/market-trends', async (req, res) => {
   try {
-    const marketTrendsResponse = await Axios.get('https://api.market-trends.com/v1/trends', {
+    const marketTrendsResponse = await Axios.get('https://bloomberg-api.p.rapidapi.com/bloomberg/agriculture', {
       params: {
-        api_key: process.env.MARKET_TRENDS_API_KEY
+        rapidapi_Key:process.env.MARKET_TRENDS_API_KEY,
+        rapidapi_Host: 'bloomberg-api.p.rapidapi.com'
       }
     });
     res.json(marketTrendsResponse.data);
@@ -335,14 +338,14 @@ router.post('/weather-predictions', async (req, res) => {
 // Example route to handle soil moisture data separately
 router.post('/soil-moisture', async (req, res) => {
   try {
-    const {start_date,end_date,units,tp } = req.body;
+    const {start_date,end_date,lat,lon } = req.body;
 
     const soilMoistureResponse = await Axios.get('https://api.weatherbit.io/v2.0/history/agweather', {
       params: {
         start_date,
        end_date,
-       units,
-       tp,
+       lat,
+       lon,
     key: process.env.WEATHERBIT_API_KEY,
       }
     });
