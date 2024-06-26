@@ -236,19 +236,21 @@ router.get('/search', async (req, res) => {
     });
 
     // Example of handling market trends
-    const marketTrendsResponse = await Axios.get('https://bloomberg-api.p.rapidapi.com/bloomberg/agriculture', {
+    const marketTrendsResponse = await Axios.get('https://statistics.kilimo.go.ke/en/api/apputils/', {
       params: {
-        rapidapi_Key:process.env.MARKET_TRENDS_API_KEY,
-        rapidapi_Host: 'bloomberg-api.p.rapidapi.com'
+        id,
+        name,
+        description
       }
     });
 
     // Example of handling weather predictions
-    const weatherPredictionsResponse = await Axios.get('http://api.openweathermap.org/data/2.5/forecast', {
+    const weatherPredictionsResponse = await Axios.get('https://api.weatherbit.io/v2.0/forecast/daily', {
       params: {
-        q: `${searchQuery},Kenya`,
-        units: 'metric',
-        appid: process.env.OPENWEATHERMAP_API_KEY
+        city: `${searchQuery},Kenya`,
+        lat: -1.286389,
+        lon:36.817223,
+        appid: process.env.WEATHERBIT_API_KEY
       }
     });
 
@@ -305,10 +307,12 @@ router.post('/weather-alerts', async (req, res) => {
 // Endpoint to fetch market trends
 router.post('/market-trends', async (req, res) => {
   try {
-    const marketTrendsResponse = await Axios.get('https://bloomberg-api.p.rapidapi.com/bloomberg/agriculture', {
+    const {id,name,description } = req.body;
+    const marketTrendsResponse = await Axios.get('https://statistics.kilimo.go.ke/en/api/apputils', {
       params: {
-        rapidapi_Key:process.env.MARKET_TRENDS_API_KEY,
-        rapidapi_Host: 'bloomberg-api.p.rapidapi.com'
+        id,
+        name,
+        description
       }
     });
     res.json(marketTrendsResponse.data);
@@ -321,11 +325,13 @@ router.post('/market-trends', async (req, res) => {
 // Endpoint to fetch weather predictions
 router.post('/weather-predictions', async (req, res) => {
   try {
-    const weatherPredictionsResponse = await Axios.get('http://api.openweathermap.org/data/2.5/forecast', {
+    const {city,lat,lon } = req.body;
+    const weatherPredictionsResponse = await Axios.get('https://api.weatherbit.io/v2.0/forecast/daily', {
       params: {
-        q: 'Nairobi,Kenya',
-        units: 'metric',
-        appid: process.env.OPENWEATHERMAP_API_KEY
+        city: 'Nairobi,Kenya',
+        lat,
+        lon,
+        key: process.env.WEATHERBIT_API_KEY
       }
     });
     res.json(weatherPredictionsResponse.data);

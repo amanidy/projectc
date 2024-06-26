@@ -55,7 +55,7 @@ const Explore = () => {
 
         
         const historicalWeatherResponse = await Axios.post('http://localhost:5000/auth/weather-data', {
-          lat: -1.286389,
+           lat: -1.286389,
           lon:36.817223
         });
         setHistoricalWeatherData(historicalWeatherResponse.data);
@@ -69,12 +69,18 @@ const Explore = () => {
 
     
         const marketTrendsResponse = await Axios.post('http://localhost:5000/auth/market-trends', {
-        rapidapi_Host: 'bloomberg-api.p.rapidapi.com'
+          id:5,
+          name:'Crops',
+          description:''
         });
         setMarketTrends(marketTrendsResponse.data);
 
         
-        const weatherPredictionsResponse = await Axios.post('http://localhost:5000/auth/weather-predictions');
+        const weatherPredictionsResponse = await Axios.post('http://localhost:5000/auth/weather-predictions', {
+          city:'Nairobi,Kenya',
+          lat: -1.286389,
+          lon:36.817223
+        });
         setWeatherPredictions(weatherPredictionsResponse.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -193,7 +199,7 @@ const Explore = () => {
           <ul>
             {Array.isArray(weatherAlerts) && weatherAlerts.length > 0 ? (
     weatherAlerts.map((data, index) => (
-      <li key={index}>{data.weatherAlerts}%</li>
+      <li key={index}>{data.weatherAlertsResponse}%</li>
     ))
   ) : (
     <li>No weather alerts data available</li>
@@ -205,21 +211,28 @@ const Explore = () => {
           Market Trends:
           <p>{searchResults.marketTrends}</p>
           <ul>
-            {marketTrends.map((trend, index) => (
-              <li key={index}>{trend.cropType}: {trend.price}</li>
-            ))}
+           {Array.isArray(marketTrends) && marketTrends.length > 0 ? (
+    marketTrends.map((data, index) => (
+      <li key={index}>{data.marketTrendsResponse}%</li>
+    ))
+  ) : (
+    <li>No market trends data available</li>
+  )}
           </ul>
         </li>
-        <li>
+        <li></li>
           <i className="fas fa-sun"></i>
           Weather Predictions:
           <p>{searchResults.weatherPredictions}</p>
           <ul>
-            {weatherPredictions.map((prediction, index) => (
-              <li key={index}>{prediction.date}: {prediction.weatherCondition}</li>
-            ))}
+            {Array.isArray(weatherPredictions) && weatherPredictions.length > 0 ? (
+    marketTrends.map((data, index) => (
+      <li key={index}>{data.weatherPredictionsResponse}%</li>
+    ))
+  ) : (
+    <li>No weather predictions data available</li>
+          )}
           </ul>
-        </li>
       </ul>
 
       <div className="crop-selection">
@@ -227,7 +240,7 @@ const Explore = () => {
         <div className="crop-images">
           {crops.map(crop => (
             <div key={crop.id} className="crop-image" onClick={() => handleCropSelection(crop)}>
-              <img src={`./images/${crop.name.toLowerCase()}.jpg`} alt={crop.name} />
+              <img src={`${process.env.PUBLIC_URL}/images/${crop.name.toLowerCase()}.jpg`} alt={crop.name} />
               <p>{crop.name}</p>
             </div>
           ))}
