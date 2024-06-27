@@ -15,7 +15,30 @@ const sampleCrops = [
     pests: ['Tomato leaf miner', 'Aphids'],
     insights: 'Tomato farming is profitable in Kenya due to high demand in local and export markets.'
   },
-  // Add more crops as needed
+  {
+    id: 3,
+    name:'Rice'
+  },
+  {
+    id: 4,
+    name:'Cotton'
+  },
+  {
+    id: 5,
+    name:'Coffee'
+  },
+  {
+    id: 6,
+    name:'Sugarcane'
+  },
+  {
+    id: 7,
+    name:'Avoacado'
+  },
+  {
+    id: 8,
+    name:'Tea'
+  }
 ];
 
 export default sampleCrops;

@@ -30,9 +30,20 @@ const Explore = () => {
               q: searchQuery
             }
           });
-          setSearchResults(response.data); // Set search results
+
+          console.log('Search API Response:', response.data);
+
+          setSearchResults(response.data);
+        
+         if (response.data.length === 0) {
+          setNotification('No results found');
+        } else {
+          setNotification('Search successful');
+        }
+
         } catch (error) {
           console.log('Error:', error);
+          setNotification('Failed to fetch search results');
         }
       }
     };
@@ -133,6 +144,7 @@ const Explore = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+  
   };
 
   return (
@@ -170,7 +182,7 @@ const Explore = () => {
           <ul>
             {Array.isArray(soilMoistureData) && soilMoistureData.length > 0 ? (
               soilMoistureData.map((data, index) => (
-                <li key={index}>{data.soilMoistureLevel}%</li>
+                <li key={index}>{data.soilMoistureResponse}%</li>
               ))
             ) : (
               <li>No soil moisture data available</li>
@@ -183,7 +195,7 @@ const Explore = () => {
           <ul>
             {Array.isArray(historicalWeatherData) && historicalWeatherData.length > 0 ? (
               historicalWeatherData.map((data, index) => (
-                <li key={index}>{data.historicalWeatherData}%</li>
+                <li key={index}>{data.historicalWeatherResponse}%</li>
               ))
             ) : (
               <li>No historical weather data available</li>
@@ -220,13 +232,13 @@ const Explore = () => {
           <i className="fas fa-sun"></i>
           Weather Predictions:
           <ul>
-            {Array.isArray(weatherPredictions) && weatherPredictions.length > 0 ? (
-              weatherPredictions.map((data, index) => (
-                <li key={index}>{data.weatherPredictionsResponse}%</li>
-              ))
-            ) : (
-              <li>No weather predictions data available</li>
-            )}
+            {Array.isArray(weatherPredictions) && weatherPredictions.length > 0 ?
+              (weatherPredictions.map((data, index) => (
+                <li key={index}>
+                  {data.weatherPredictionsResponse}%
+                </li>
+              )))
+              : (<li>No weather predictions data available</li>)}
           </ul>
         </li>
       </ul>
@@ -280,3 +292,4 @@ const Explore = () => {
 };
 
 export default Explore;
+ 
