@@ -15,13 +15,9 @@ const Explore = () => {
   const [newMessage, setNewMessage] = useState('');
   const [crops, setCrops] = useState(sampleCrops);
   const [selectedCrop, setSelectedCrop] = useState(null);
-
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState({});
+  const [searchResults, setSearchResults] = useState([]); // Ensure searchResults is an array
   const navigate = useNavigate();
-
-
-
 
   Axios.defaults.withCredentials = true;
 
@@ -29,16 +25,14 @@ const Explore = () => {
     const fetchSearchResults = async () => {
       if (searchQuery) {
         try {
-          const response = await Axios.get('http://localhost:5000/search', {
+          const response = await Axios.get('http://localhost:5000/auth/search', {
             params: {
               q: searchQuery
             }
           });
-          setSearchResults(response.data);
+          setSearchResults(response.data); // Set search results
         } catch (error) {
-          console.log('Error:',error)
-        
-        
+          console.log('Error:', error);
         }
       }
     };
@@ -49,44 +43,39 @@ const Explore = () => {
           start_date: '2024-06-25',
           end_date: '2024-07-01',
           lat: -1.286389,
-          lon:36.817223
+          lon: 36.817223
         });
         setSoilMoistureData(soilMoistureResponse.data);
 
-        
         const historicalWeatherResponse = await Axios.post('http://localhost:5000/auth/weather-data', {
-           lat: -1.286389,
-          lon:36.817223
+          lat: -1.286389,
+          lon: 36.817223
         });
         setHistoricalWeatherData(historicalWeatherResponse.data);
 
-      
         const weatherAlertsResponse = await Axios.post('http://localhost:5000/auth/weather-alerts', {
           city: 'Nairobi',
           country: 'Kenya'
         });
         setWeatherAlerts(weatherAlertsResponse.data);
 
-    
         const marketTrendsResponse = await Axios.post('http://localhost:5000/auth/market-trends', {
-          id:5,
-          name:'Crops',
-          description:''
+          id: 5,
+          name: 'Crops',
+          description: ''
         });
         setMarketTrends(marketTrendsResponse.data);
 
-        
         const weatherPredictionsResponse = await Axios.post('http://localhost:5000/auth/weather-predictions', {
-          city:'Nairobi,Kenya',
+          city: 'Nairobi,Kenya',
           lat: -1.286389,
-          lon:36.817223
+          lon: 36.817223
         });
         setWeatherPredictions(weatherPredictionsResponse.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-
 
     fetchSearchResults();
     fetchData();
@@ -108,7 +97,6 @@ const Explore = () => {
       .catch(err => {
         console.log(err);
       });
-
   }, [searchQuery, navigate]);
 
   const handleNotification = () => {
@@ -161,78 +149,86 @@ const Explore = () => {
       </form>
 
       {notification && <div className="notification">{notification}</div>}
+      <button onClick={handleNotification}>Show Notification</button>
+
+      {searchResults.length > 0 && (
+        <div className="search-results">
+          <h2>Search Results</h2>
+          <ul>
+            {searchResults.map((result, index) => (
+              <li key={index}>{result}</li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <h2>Key Features</h2>
       <ul>
         <li>
           <i className="fas fa-seedling"></i>
           Soil Moisture Analysis:
-          <p>{searchResults.soilMoisture}</p>
           <ul>
             {Array.isArray(soilMoistureData) && soilMoistureData.length > 0 ? (
-    soilMoistureData.map((data, index) => (
-      <li key={index}>{data.soilMoistureLevel}%</li>
-    ))
-  ) : (
-    <li>No soil moisture data available</li>
-  )}
+              soilMoistureData.map((data, index) => (
+                <li key={index}>{data.soilMoistureLevel}%</li>
+              ))
+            ) : (
+              <li>No soil moisture data available</li>
+            )}
           </ul>
         </li>
         <li>
           <i className="fas fa-cloud"></i>
           Historical Weather Data:
-          <p>{searchResults.weatherData}</p>
           <ul>
             {Array.isArray(historicalWeatherData) && historicalWeatherData.length > 0 ? (
-    historicalWeatherData.map((data, index) => (
-      <li key={index}>{data.historicalWeatherData}%</li>
-    ))
-  ) : (
-    <li>No historical weather  data available</li>
-  )}
+              historicalWeatherData.map((data, index) => (
+                <li key={index}>{data.historicalWeatherData}%</li>
+              ))
+            ) : (
+              <li>No historical weather data available</li>
+            )}
           </ul>
         </li>
         <li>
           <i className="fas fa-bell"></i>
           Personalized Weather Alerts:
-          <p>{searchResults.weatherAlerts}</p>
           <ul>
             {Array.isArray(weatherAlerts) && weatherAlerts.length > 0 ? (
-    weatherAlerts.map((data, index) => (
-      <li key={index}>{data.weatherAlertsResponse}%</li>
-    ))
-  ) : (
-    <li>No weather alerts data available</li>
-  )}
+              weatherAlerts.map((data, index) => (
+                <li key={index}>{data.weatherAlertsResponse}%</li>
+              ))
+            ) : (
+              <li>No weather alerts data available</li>
+            )}
           </ul>
         </li>
         <li>
           <i className="fas fa-chart-line"></i>
           Market Trends:
-          <p>{searchResults.marketTrends}</p>
           <ul>
-           {Array.isArray(marketTrends) && marketTrends.length > 0 ? (
-    marketTrends.map((data, index) => (
-      <li key={index}>{data.marketTrendsResponse}%</li>
-    ))
-  ) : (
-    <li>No market trends data available</li>
-  )}
+            {Array.isArray(marketTrends) && marketTrends.length > 0 ? (
+              marketTrends.map((data, index) => (
+                <li key={index}>{data.marketTrendsResponse}%</li>
+              ))
+            ) : (
+              <li>No market trends data available</li>
+            )}
           </ul>
         </li>
-        <li></li>
+        <li>
           <i className="fas fa-sun"></i>
           Weather Predictions:
-          <p>{searchResults.weatherPredictions}</p>
           <ul>
             {Array.isArray(weatherPredictions) && weatherPredictions.length > 0 ? (
-    marketTrends.map((data, index) => (
-      <li key={index}>{data.weatherPredictionsResponse}%</li>
-    ))
-  ) : (
-    <li>No weather predictions data available</li>
-          )}
+              weatherPredictions.map((data, index) => (
+                <li key={index}>{data.weatherPredictionsResponse}%</li>
+              ))
+            ) : (
+              <li>No weather predictions data available</li>
+            )}
           </ul>
+        </li>
       </ul>
 
       <div className="crop-selection">
@@ -257,11 +253,13 @@ const Explore = () => {
       </div>
 
       <div className="chat-container">
-        <h2>Chat Space</h2>
+        <h2>Chat Feature</h2>
         <div className="chat-messages">
           {chatMessages.map((message, index) => (
-            <div key={index} className="chat-message">
+            <div key={index} className={`chat-message ${message.user === 'current-user' ? 'current-user' : ''}`}>
               <strong>{message.user}</strong>: {message.text}
+              <br />
+              <small>{message.timestamp.toLocaleString()}</small>
             </div>
           ))}
         </div>
@@ -270,17 +268,15 @@ const Explore = () => {
             type="text"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Type your message..."
+            placeholder="Type your message"
           />
           <button onClick={handleSendMessage}>Send</button>
         </div>
       </div>
 
-      <button onClick={handleNotification} className='notification-btn'>Show Notification</button>
-
-      <button onClick={handleLogout} className='logout-btn'>Log Out</button>
+      <button onClick={handleLogout}>Logout</button>
     </div>
   );
-}
+};
 
 export default Explore;

@@ -203,10 +203,19 @@ const chatMessageSchema = new mongoose.Schema({
 });
 const ChatMessage = mongoose.model('ChatMessage', chatMessageSchema);
 
+
+
 router.get('/search', async (req, res) => {
   try {
     const searchQuery = req.query.q;
-    // Example of handling soil moisture data
+    // Ensure the parameters like start_date, end_date, lat, lon, etc., are defined or derived appropriately
+    const start_date = '2023-06-01'; // Example start date
+    const end_date = '2023-06-02'; // Example end date
+    const lat = -1.286389; // Example latitude
+    const lon = 36.817223;
+    const city = `${searchQuery}`;
+    const country = 'Kenya';
+
     const soilMoistureResponse = await Axios.get('https://api.weatherbit.io/v2.0/history/agweather', {
       params: {
         start_date,
@@ -217,40 +226,38 @@ router.get('/search', async (req, res) => {
       }
     });
 
-    // Example of handling historical weather data
     const weatherDataResponse = await Axios.get('https://api.openweathermap.org/data/2.5/weather', {
       params: {
-          lat,
-          lon,
-          appid: process.env.openWeatherMapApiKey
+        lat,
+        lon,
+        appid: process.env.openWeatherMapApiKey
       }
     });
 
-    // Example of handling weather alerts
     const weatherAlertsResponse = await Axios.get('https://api.weatherbit.io/v2.0/alerts', {
       params: {
-        city: searchQuery,
-        country: '', // Adjust as per your needs
+        lat,
+        lon,
+        city,
+        country, 
         key: process.env.WEATHERBIT_API_KEY
       }
     });
 
-    // Example of handling market trends
     const marketTrendsResponse = await Axios.get('https://statistics.kilimo.go.ke/en/api/apputils/', {
       params: {
-        id,
-        name,
-        description
+        id: 1, // Example id
+        name: 'Crops', // Example name
+        description: '' // Example description
       }
     });
 
-    // Example of handling weather predictions
     const weatherPredictionsResponse = await Axios.get('https://api.weatherbit.io/v2.0/forecast/daily', {
       params: {
-        city: `${searchQuery},Kenya`,
+        city: `${searchQuery}`,
         lat: -1.286389,
-        lon:36.817223,
-        appid: process.env.WEATHERBIT_API_KEY
+        lon: 36.817223,
+        key: process.env.WEATHERBIT_API_KEY
       }
     });
 
@@ -269,15 +276,16 @@ router.get('/search', async (req, res) => {
   }
 });
 
+
 // Example route to handle soil moisture data separately
 router.post('/weather-data', async (req, res) => {
   try {
-    const {lat,lon } = req.body;
+    const { lat, lon } = req.body;
     const weatherDataResponse = await Axios.get('https://api.openweathermap.org/data/2.5/weather', {
       params: {
-          lat,
-          lon,
-          appid: process.env.openWeatherMapApiKey
+        lat,
+        lon,
+        appid: process.env.openWeatherMapApiKey
       }
     });
     res.json(weatherDataResponse.data);
@@ -290,10 +298,13 @@ router.post('/weather-data', async (req, res) => {
 // Endpoint to fetch weather alerts
 router.post('/weather-alerts', async (req, res) => {
   try {
+    const { lat, lon,city,country } = req.body;
     const weatherAlertsResponse = await Axios.get('https://api.weatherbit.io/v2.0/alerts', {
       params: {
-        city: 'Nairobi',
-        country: 'Kenya',
+        lat,
+        lon,
+        city,
+        country,
         key: process.env.WEATHERBIT_API_KEY
       }
     });
@@ -307,7 +318,7 @@ router.post('/weather-alerts', async (req, res) => {
 // Endpoint to fetch market trends
 router.post('/market-trends', async (req, res) => {
   try {
-    const {id,name,description } = req.body;
+    const { id, name, description } = req.body;
     const marketTrendsResponse = await Axios.get('https://statistics.kilimo.go.ke/en/api/apputils', {
       params: {
         id,
@@ -325,7 +336,7 @@ router.post('/market-trends', async (req, res) => {
 // Endpoint to fetch weather predictions
 router.post('/weather-predictions', async (req, res) => {
   try {
-    const {city,lat,lon } = req.body;
+    const { city, lat, lon } = req.body;
     const weatherPredictionsResponse = await Axios.get('https://api.weatherbit.io/v2.0/forecast/daily', {
       params: {
         city: 'Nairobi,Kenya',
@@ -344,15 +355,15 @@ router.post('/weather-predictions', async (req, res) => {
 // Example route to handle soil moisture data separately
 router.post('/soil-moisture', async (req, res) => {
   try {
-    const {start_date,end_date,lat,lon } = req.body;
+    const { start_date, end_date, lat, lon } = req.body;
 
     const soilMoistureResponse = await Axios.get('https://api.weatherbit.io/v2.0/history/agweather', {
       params: {
         start_date,
-       end_date,
-       lat,
-       lon,
-    key: process.env.WEATHERBIT_API_KEY,
+        end_date,
+        lat,
+        lon,
+        key: process.env.WEATHERBIT_API_KEY,
       }
     });
 
@@ -363,11 +374,8 @@ router.post('/soil-moisture', async (req, res) => {
   }
 });
 
-
-
-
 // Chat Messages Routes
-router.post('/chat-messages', async (req, res) => {
+router.get('/chat-messages', async (req, res) => {
   try {
     const chatMessages = await ChatMessage.find().sort({ timestamp: -1 }).limit(20);
     res.json(chatMessages);
@@ -388,6 +396,9 @@ router.post('/chat-messages', async (req, res) => {
     res.status(500).json({ error: 'Failed to save chat message' });
   }
 });
+
+
+
 
 
 export {router as UserRouter}

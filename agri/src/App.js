@@ -34,7 +34,7 @@ const App = () => {
   }, [heroData.length]);
 
   return (
-    <div className='App'>
+    <div className='App' >
       <Navbar />
       <Background playStatus={playStatus} heroStatus={heroCount} />
       <Routes>

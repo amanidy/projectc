@@ -1,28 +1,31 @@
-html,body{
+html, body {
     margin: 0;
     padding: 0;
     height: 100%;
 }
-.App{
+
+.App {
     min-height: 100vh;
 }
-#root{
+
+#root {
     min-height: 100%;
     position: relative;
 }
-@keyframes appAnimation{
- from {
-    opacity: 0;
-    transform: translateY(-20px);
- }
- to{
-    opacity: 1;
-    transform: translateY(0);
- }
+
+@keyframes appAnimation {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
+
 @media (max-width:768px) {
-    .App{
+    .App {
         animation: appAnimation 0.5s ease-out;
     }
-    
 }
