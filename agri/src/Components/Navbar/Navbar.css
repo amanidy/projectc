@@ -1,56 +1,71 @@
-.nav{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 40px 120px;
-    color: white;
+.navbar {
+  background-color: #4CAF50; /* Green background */
+  color: #fff; /* White text color */
+  padding: 10px 20px; /* Padding for top and bottom, and some horizontal padding */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  width: 100%; /* Full width */
 }
 
-.nav-menu{
-    display: flex;
-    align-items: center;
-    list-style: none;
-    font-size: 18px;
-    gap: 20px;
-    margin-left: 180px;
-    margin-top: -30px;
+.navbar-container {
+  max-width: 1200px; /* Limit the width to 1000px */
+  margin: 0 auto; /* Center the container horizontally */
+  display: flex; /* Use flexbox for layout */
+  justify-content: space-between; /* Space items evenly */
+  align-items: center; /* Center items vertically */
 }
 
-.nav-contact{
-    border-radius: 50px;
-    padding: 10px 38px;
-    background-color: white;
-    color: #262626;
-    text-decoration: none;
-}
-.nav-contact:hover {
-  background-color: #baaeba; 
-}
-
-h2 {
-  font-family: 'Open Sans', sans-serif;
-  font-size: 36px;
-  font-weight: bold;
-  color: #34C759;
-  padding: 20px;
-  background-color: #F7F7F7;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  position: relative;
+.navbar-logo {
+  font-size: 24px; /* Font size for the logo */
+  margin: 0; /* Remove default margin */
+  font-weight: bold; /* Bold font weight */
+  letter-spacing: 1px; /* Add some letter spacing */
+  background-size: 40px; /* Adjust background size */
+  background-position: left center; /* Position the background */
+  background-repeat: no-repeat; /* Prevent background from repeating */
+  margin-left: -470px;
+  order: 1; /* Ensure h2 is on the right */
 }
 
-h2::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('../../assets/logo-icon.svg');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  opacity: 0.1;
-  z-index: -1; 
+.navbar-menu {
+  list-style-type: none; /* Remove default list style */
+  padding: 0; /* Remove default padding */
+  margin: 0; /* Remove default margin */
+  display: flex; /* Use flexbox for layout */
+  order: 2; /* Ensure list items are on the left */
+}
+
+.navbar-item {
+  margin-right: 20px; /* Margin between list items */
+}
+
+.navbar-link {
+  color: #fff; /* White text color */
+  text-decoration: none; /* Remove underline */
+  font-size: 16px; /* Font size */
+  display: flex; /* Use flexbox for layout */
+  align-items: center; /* Center items vertically */
+  transition: color 0.3s ease; /* Smooth color transition */
+}
+
+.navbar-link i {
+  margin-right: 5px; /* Margin between icon and text */
+  font-size: 18px; /* Icon font size */
+}
+
+.navbar-link:hover {
+  color: #ffd700; /* Yellow text color on hover */
+  text-decoration: underline; /* Underline on hover */
+}
+
+/* Additional styles for enhanced interactivity */
+.navbar-link:hover i {
+  transform: scale(1.1); /* Scale icon on hover */
+}
+
+.navbar-menu li:last-child {
+  margin-right: 0; /* Remove margin from the last list item */
+}
+.logo-icon{
+  width: 40px;
+  height: auto;
 }

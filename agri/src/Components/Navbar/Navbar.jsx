@@ -1,23 +1,37 @@
 import React from 'react';
-import './Navbar.css'
 import { Link } from 'react-router-dom';
-  const Navbar = () => {
+import './Navbar.css';
+import logoIcon from '../../assets/logo-icon.svg'; // Import your logo icon
+
+const Navbar = () => {
   return (
-<div>
-      <div className='nav'>
-        <h2>AGRISENSE</h2>
-        
-      <ul className='nav-menu'>
-        <Link to="/agrisense" className='nav-contact'>Home</Link>
-        <Link to="/login" className='nav-contact'>Login</Link>
-        <Link to="/signup" className='nav-contact'>Register</Link>
-        <Link to="/explore" className='nav-contact'>Explore</Link>
-        <Link to="/about" className='nav-contact'>About</Link>
-        <Link to="/contact" className='nav-contact'>Contact</Link>
-      
-      </ul>
+    <div className='navbar'>
+      <div className='navbar-container'>
+        <img src={ logoIcon} alt='' className='logo-icon'/>
+        <h2 className='navbar-logo' >AGRISENSE</h2>
+        <ul className='navbar-menu'>
+          <li className='navbar-item'>
+            <Link to="/agrisense" className='navbar-link'><i className='fas fa-home'></i> Home</Link>
+          </li>
+          <li className='navbar-item'>
+            <Link to="/login" className='navbar-link'><i className='fas fa-sign-in-alt'></i> Login</Link>
+          </li>
+          <li className='navbar-item'>
+            <Link to="/signup" className='navbar-link'><i className='fas fa-user-plus'></i> Register</Link>
+          </li>
+          <li className='navbar-item'>
+            <Link to="/explore" className='navbar-link'><i className='fas fa-compass'></i> Explore</Link>
+          </li>
+          <li className='navbar-item'>
+            <Link to="/about" className='navbar-link'><i className='fas fa-info-circle'></i> About</Link>
+          </li>
+          <li className='navbar-item'>
+            <Link to="/contact" className='navbar-link'><i className='fas fa-phone'></i> Contact</Link>
+          </li>
+        </ul>
       </div>
-      </div>
-  )
-  }
+    </div>
+  );
+}
+
 export default Navbar;

@@ -14,19 +14,21 @@ const Hero = ({ setPlayStatus, heroData, heroCount, setHeroCount, playStatus }) 
 
   return (
     <div className='hero'>
-      <div className='hero-text'>
-        <p>{heroData[heroCount].text1}</p>
-        <p>{heroData[heroCount].text2}</p>
-      </div>
-      <div className='hero-explore' onClick={handleExploreClick}>
-        <p>Explore features</p>
-        <img className='explore-arrow' src={arrow_btn} alt='Explore features' />
+      <div className='hero-content'>
+        <div className='hero-text'>
+          <p>{heroData[heroCount].text1}</p>
+          <p>{heroData[heroCount].text2}</p>
+        </div>
+        <div className='hero-explore' onClick={handleExploreClick}>
+          <p>Explore features</p>
+          <img className='explore-arrow' src={arrow_btn} alt='Explore features' />
+        </div>
       </div>
       <div className='hero-dot-play'>
         <ul className='hero-dots'>
-          <li onClick={() => setHeroCount(0)} className={heroCount === 0 ? "hero-dot-orange" : "hero-dot"}></li>
-          <li onClick={() => setHeroCount(1)} className={heroCount === 1 ? "hero-dot-orange" : "hero-dot"}></li>
-          <li onClick={() => setHeroCount(2)} className={heroCount === 2 ? "hero-dot-orange" : "hero-dot"}></li>
+          <li onClick={() => setHeroCount(0)} className={heroCount === 0 ? "hero-dot hero-dot-active" : "hero-dot"}></li>
+          <li onClick={() => setHeroCount(1)} className={heroCount === 1 ? "hero-dot hero-dot-active" : "hero-dot"}></li>
+          <li onClick={() => setHeroCount(2)} className={heroCount === 2 ? "hero-dot hero-dot-active" : "hero-dot"}></li>
         </ul>
         <div className='hero-play'>
           <img onClick={() => setPlayStatus(!playStatus)} src={playStatus ? pause_icon : play_icon} alt="Play/Pause" />

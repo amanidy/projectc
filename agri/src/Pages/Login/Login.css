@@ -20,7 +20,7 @@
     padding: 20px;
 }
 
-.sign-in-form label {
+.sign-up-form label {
     display: block;
     margin-bottom: 10px;
 }
@@ -49,16 +49,4 @@
 .sign-in-form p {
     text-align: center;
     margin-top: 10px;
-}
-
-.sign-in-form a {
-    display: flex;
-    text-align: center;
-    margin-top: 10px;
-    color: #333;
-    text-decoration: none;
-}
-
-.sign-in-form a:hover {
-    text-decoration: underline;
 }
