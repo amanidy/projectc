@@ -157,6 +157,10 @@ const Explore = () => {
 
   const handleSearch = (event) => {
     setSearchQuery(event.target.value);
+    if (searchQuery === 'Nairobi, Kenya') {
+      setSearchQuery(event.target.value);
+      fetchData();
+    }
   };
 
   const handleSubmit = (event) => {
@@ -170,17 +174,17 @@ const Explore = () => {
         <input
           type="text"
           value={searchQuery}
-          onChange={handleSearch}
+          onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Enter city or location"
           className='search-input'
         />
-        <button type="submit" className='search-button'>Search</button>
+        <button type="submit" className='search-button' onClick={handleSearch}>Search</button>
       </form>
 
       {notification && <div className="notification">{notification}</div>}
       <button onClick={handleNotification}>Show Notification</button>
 
-      {searchResults.length > 0 && (
+      {searchResults.length > 0 && searchQuery ==='Nairobi,Kenya'&& (
         <div className="search-results">
           <h2>Search Results</h2>
           <ul>
@@ -191,56 +195,107 @@ const Explore = () => {
         </div>
       )}
     
-    
+    <h2>Key Features</h2>
+      <ul>
+        {/* Soil Moisture Data */}
+
+        {searchQuery === 'Nairobi,Kenya' && (
+          <li>
+            <h3>Soil Moisture Data</h3>
+            <ul>
+              {soilMoistureData && soilMoistureData.data && soilMoistureData.data.length > 0 ? (
+                soilMoistureData.data.map((data, index) => (
+                  <li key={index}>
+                    <p>Bulk Soil Density: {data.bulk_soil_density}</p>
+                    <p>Precipitation: {data.precip}</p>
+                    {/* Add more fields as needed */}
+                  </li>
+                ))
+              ) : (
+                <li>No soil moisture data available</li>
+              )}
+            </ul>
+          </li>
+        )}
+
+        {/* Historical Weather Data */}
+        {searchQuery === 'Nairobi,Kenya' && (
+          <li>
+            <h3>Historical Weather Data</h3>
+            <ul>
+              {historicalWeatherData && historicalWeatherData.main ? (
+                <li>
+                  <p>Temperature: {historicalWeatherData.main.temp}°C</p>
+                  <p>Humidity: {historicalWeatherData.main.humidity}%</p>
+                </li>
+              ) : (
+                <li>No historical weather data available</li>
+              )}
+            </ul>
+          </li>
+        )}
+
+        {/* Weather Alerts */}
+        {searchQuery === 'Nairobi,Kenya' && (
+          <li>
+            <h3>Weather Alerts</h3>
+            <ul>
+              {weatherAlerts && weatherAlerts.alerts && weatherAlerts.alerts.length > 0 ? (
+                weatherAlerts.alerts.map((alert, index) => (
+                  <li key={index}>
+                    <p>Description: {alert.description}</p>
+                    <p>Severity: {alert.severity}</p>
+                  </li>
+                ))
+              ) : (
+                <li>No weather alerts data available</li>
+              )}
+            </ul>
+          </li>
+        )}
+
+
+        {/* Market Trends */}
+        {searchQuery === 'Nairobi,Kenya' && (
+          <li>
+            <h3>Market Trends</h3>
+            <ul>
+              {marketTrends && marketTrends.county && marketTrends.county.length > 0 ? (
+                marketTrends.county.map((county, index) => (
+                  <li key={index}>
+                    <p>County: {county.name}</p>
+                    {/* Display more fields if available */}
+                  </li>
+                ))
+              ) : (
+                <li>No market trends data available</li>
+              )}
+            </ul>
+          </li>
+        )}
+
+
+        {/* Weather Predictions */}
+        {searchQuery === 'Nairobi,Kenya' && (
+          <li>
+            <h3>Weather Predictions</h3>
+            <ul>
+              {weatherPredictions && weatherPredictions.data && weatherPredictions.data.length > 0 ? (
+                weatherPredictions.data.map((prediction, index) => (
+                  <li key={index}>
+                    <p>Prediction: {prediction.prediction}</p>
+                    {/* Display more fields if available */}
+                  </li>
+                ))
+              ) : (
+                <li>No weather predictions data available</li>
+              )}
+            </ul>
+          </li>
+        )}
+      </ul>
       
-      <h2>Key Features</h2>
-      
-     <ul>
-        {soilMoistureData.map((data, index) => (
-          <li key={index}>
-            <p>Soil Moisture Value: {data.soilMoistureValue}%</p>
-          </li>
-        ))}
-      </ul>
-
-      <h1>Historical Weather Data</h1>
-      <ul>
-        {historicalWeatherData.map((data, index) => (
-          <li key={index}>
-            <p>Temperature: {data.main.temp}°C</p>
-            <p>Humidity: {data.main.humidity}%</p>
-          </li>
-        ))}
-      </ul>
-
-      <h1>Weather Alerts</h1>
-      <ul>
-        {weatherAlerts.map((data, index) => (
-          <li key={index}>
-            <p>Description: {data.description}</p>
-            <p>Severity: {data.severity}</p>
-          </li>
-        ))}
-      </ul>
-
-      <h1>Market Trends</h1>
-      <ul>
-        {marketTrends.map((data, index) => (
-          <li key={index}>
-            <p>County: {data.name}</p>
-            <p>Trend: {data.trend}</p>
-          </li>
-        ))}
-      </ul>
-
-      <h1>Weather Predictions</h1>
-      <ul>
-        {weatherPredictions.map((data, index) => (
-          <li key={index}>
-            <p>Prediction: {data.prediction}</p>
-          </li>
-        ))}
-      </ul>
+     
 
       <div className="crop-selection">
         <h2>Crop Selection</h2>
