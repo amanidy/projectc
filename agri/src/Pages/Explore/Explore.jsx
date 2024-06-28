@@ -16,10 +16,68 @@ const Explore = () => {
   const [crops, setCrops] = useState(sampleCrops);
   const [selectedCrop, setSelectedCrop] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState([]); // Ensure searchResults is an array
+  const [searchResults, setSearchResults] = useState([]);
   const navigate = useNavigate();
 
   Axios.defaults.withCredentials = true;
+
+  const fetchData = async () => {
+    try {
+      const soilMoistureResponse = await Axios.post('http://localhost:5000/auth/soil-moisture', {
+        start_date: '2024-06-25',
+        end_date: '2024-07-01',
+        lat: -1.286389,
+        lon: 36.817223
+      });
+      console.log('Soil Moisture Data:', soilMoistureResponse.data);
+      setSoilMoistureData(soilMoistureResponse.data);
+
+      const historicalWeatherResponse = await Axios.post('http://localhost:5000/auth/weather-data', {
+        lat: -1.286389,
+        lon: 36.817223
+      });
+      console.log('Historical Data:', historicalWeatherResponse.data);
+      setHistoricalWeatherData(historicalWeatherResponse.data);
+
+      const weatherAlertsResponse = await Axios.post('http://localhost:5000/auth/weather-alerts', {
+        city: 'Nairobi',
+        country: 'Kenya'
+      });
+      console.log('Weather alert data:', weatherAlertsResponse.data);
+      setWeatherAlerts(weatherAlertsResponse.data);
+
+      const marketTrendsResponse = await Axios.post('http://localhost:5000/auth/market-trends', {
+        id: 5,
+        name: 'Crops',
+        description: ''
+      });
+      console.log('market trend data:', marketTrendsResponse.data);
+      setMarketTrends(marketTrendsResponse.data);
+
+      const weatherPredictionsResponse = await Axios.post('http://localhost:5000/auth/weather-predictions', {
+        city: 'Nairobi,Kenya',
+        lat: -1.286389,
+        lon: 36.817223
+      });
+      console.log('weather prediction data:', weatherPredictionsResponse.data);
+      setWeatherPredictions(weatherPredictionsResponse.data);
+
+
+
+      setSoilMoistureData(soilMoistureResponse.data);
+      setHistoricalWeatherData(historicalWeatherResponse.data);
+      setWeatherAlerts(weatherAlertsResponse.data);
+      setMarketTrends(marketTrendsResponse.data);
+      setWeatherPredictions(weatherPredictionsResponse.data);
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchSearchResults = async () => {
@@ -29,8 +87,7 @@ const Explore = () => {
             params: {
               q: searchQuery
             }
-          });
-
+          })
           console.log('Search API Response:', response.data);
 
           setSearchResults(response.data);
@@ -48,48 +105,6 @@ const Explore = () => {
       }
     };
 
-    const fetchData = async () => {
-      try {
-        const soilMoistureResponse = await Axios.post('http://localhost:5000/auth/soil-moisture', {
-          start_date: '2024-06-25',
-          end_date: '2024-07-01',
-          lat: -1.286389,
-          lon: 36.817223
-        });
-        setSoilMoistureData(soilMoistureResponse.data);
-
-        const historicalWeatherResponse = await Axios.post('http://localhost:5000/auth/weather-data', {
-          lat: -1.286389,
-          lon: 36.817223
-        });
-        setHistoricalWeatherData(historicalWeatherResponse.data);
-
-        const weatherAlertsResponse = await Axios.post('http://localhost:5000/auth/weather-alerts', {
-          city: 'Nairobi',
-          country: 'Kenya'
-        });
-        setWeatherAlerts(weatherAlertsResponse.data);
-
-        const marketTrendsResponse = await Axios.post('http://localhost:5000/auth/market-trends', {
-          id: 5,
-          name: 'Crops',
-          description: ''
-        });
-        setMarketTrends(marketTrendsResponse.data);
-
-        const weatherPredictionsResponse = await Axios.post('http://localhost:5000/auth/weather-predictions', {
-          city: 'Nairobi,Kenya',
-          lat: -1.286389,
-          lon: 36.817223
-        });
-        setWeatherPredictions(weatherPredictionsResponse.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchSearchResults();
-    fetchData();
 
     const sampleChatMessages = [
       { text: 'Hi, have you seen this page?', user: 'Arnold', timestamp: new Date('2024-06-21T10:15:00') },
@@ -108,6 +123,8 @@ const Explore = () => {
       .catch(err => {
         console.log(err);
       });
+    
+     fetchSearchResults();
   }, [searchQuery, navigate]);
 
   const handleNotification = () => {
@@ -173,74 +190,56 @@ const Explore = () => {
           </ul>
         </div>
       )}
-
+    
+    
+      
       <h2>Key Features</h2>
+      
+     <ul>
+        {soilMoistureData.map((data, index) => (
+          <li key={index}>
+            <p>Soil Moisture Value: {data.soilMoistureValue}%</p>
+          </li>
+        ))}
+      </ul>
+
+      <h1>Historical Weather Data</h1>
       <ul>
-        <li>
-          <i className="fas fa-seedling"></i>
-          Soil Moisture Analysis:
-          <ul>
-            {Array.isArray(soilMoistureData) && soilMoistureData.length > 0 ? (
-              soilMoistureData.map((data, index) => (
-                <li key={index}>{data.soilMoistureResponse}%</li>
-              ))
-            ) : (
-              <li>No soil moisture data available</li>
-            )}
-          </ul>
-        </li>
-        <li>
-          <i className="fas fa-cloud"></i>
-          Historical Weather Data:
-          <ul>
-            {Array.isArray(historicalWeatherData) && historicalWeatherData.length > 0 ? (
-              historicalWeatherData.map((data, index) => (
-                <li key={index}>{data.historicalWeatherResponse}%</li>
-              ))
-            ) : (
-              <li>No historical weather data available</li>
-            )}
-          </ul>
-        </li>
-        <li>
-          <i className="fas fa-bell"></i>
-          Personalized Weather Alerts:
-          <ul>
-            {Array.isArray(weatherAlerts) && weatherAlerts.length > 0 ? (
-              weatherAlerts.map((data, index) => (
-                <li key={index}>{data.weatherAlertsResponse}%</li>
-              ))
-            ) : (
-              <li>No weather alerts data available</li>
-            )}
-          </ul>
-        </li>
-        <li>
-          <i className="fas fa-chart-line"></i>
-          Market Trends:
-          <ul>
-            {Array.isArray(marketTrends) && marketTrends.length > 0 ? (
-              marketTrends.map((data, index) => (
-                <li key={index}>{data.marketTrendsResponse}%</li>
-              ))
-            ) : (
-              <li>No market trends data available</li>
-            )}
-          </ul>
-        </li>
-        <li>
-          <i className="fas fa-sun"></i>
-          Weather Predictions:
-          <ul>
-            {Array.isArray(weatherPredictions) && weatherPredictions.length > 0 ?
-              (weatherPredictions.map((data, index) => (
-                <li key={index}>
-                  {data.weatherPredictionsResponse}%
-                </li>
-              )))
-              : (<li>No weather predictions data available</li>)}
-          </ul>
-        </li>
+        {historicalWeatherData.map((data, index) => (
+          <li key={index}>
+            <p>Temperature: {data.main.temp}°C</p>
+            <p>Humidity: {data.main.humidity}%</p>
+          </li>
+        ))}
+      </ul>
+
+      <h1>Weather Alerts</h1>
+      <ul>
+        {weatherAlerts.map((data, index) => (
+          <li key={index}>
+            <p>Description: {data.description}</p>
+            <p>Severity: {data.severity}</p>
+          </li>
+        ))}
+      </ul>
+
+      <h1>Market Trends</h1>
+      <ul>
+        {marketTrends.map((data, index) => (
+          <li key={index}>
+            <p>County: {data.name}</p>
+            <p>Trend: {data.trend}</p>
+          </li>
+        ))}
+      </ul>
+
+      <h1>Weather Predictions</h1>
+      <ul>
+        {weatherPredictions.map((data, index) => (
+          <li key={index}>
+            <p>Prediction: {data.prediction}</p>
+          </li>
+        ))}
       </ul>
 
       <div className="crop-selection">

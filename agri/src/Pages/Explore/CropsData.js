@@ -33,7 +33,7 @@ const sampleCrops = [
   },
   {
     id: 7,
-    name:'Avoacado'
+    name:'Avocado'
   },
   {
     id: 8,
