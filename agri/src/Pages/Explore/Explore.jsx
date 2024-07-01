@@ -30,29 +30,28 @@ const Explore = () => {
         lon: 36.817223
       });
       console.log('Soil Moisture Data:', soilMoistureResponse.data);
-      setSoilMoistureData(soilMoistureResponse.data);
+      
 
       const historicalWeatherResponse = await Axios.post('http://localhost:5000/auth/weather-data', {
         lat: -1.286389,
         lon: 36.817223
       });
       console.log('Historical Data:', historicalWeatherResponse.data);
-      setHistoricalWeatherData(historicalWeatherResponse.data);
+      
 
       const weatherAlertsResponse = await Axios.post('http://localhost:5000/auth/weather-alerts', {
         city: 'Nairobi',
         country: 'Kenya'
       });
       console.log('Weather alert data:', weatherAlertsResponse.data);
-      setWeatherAlerts(weatherAlertsResponse.data);
-
+     
       const marketTrendsResponse = await Axios.post('http://localhost:5000/auth/market-trends', {
         id: 5,
         name: 'Crops',
         description: ''
       });
       console.log('market trend data:', marketTrendsResponse.data);
-      setMarketTrends(marketTrendsResponse.data);
+      
 
       const weatherPredictionsResponse = await Axios.post('http://localhost:5000/auth/weather-predictions', {
         city: 'Nairobi,Kenya',
@@ -60,8 +59,7 @@ const Explore = () => {
         lon: 36.817223
       });
       console.log('weather prediction data:', weatherPredictionsResponse.data);
-      setWeatherPredictions(weatherPredictionsResponse.data);
-
+     
 
 
       setSoilMoistureData(soilMoistureResponse.data);
@@ -156,9 +154,8 @@ const Explore = () => {
   };
 
   const handleSearch = (event) => {
-    setSearchQuery(event.target.value);
+    event.preventDefault();
     if (searchQuery === 'Nairobi, Kenya') {
-      setSearchQuery(event.target.value);
       fetchData();
     }
   };
@@ -199,27 +196,30 @@ const Explore = () => {
       <ul>
         {/* Soil Moisture Data */}
 
-        {searchQuery === 'Nairobi,Kenya' && (
+        {searchQuery === 'Current soil moisture levels in Kenya' && (
           <li>
             <h3>Soil Moisture Data</h3>
             <ul>
-              {soilMoistureData && soilMoistureData.data && soilMoistureData.data.length > 0 ? (
-                soilMoistureData.data.map((data, index) => (
-                  <li key={index}>
-                    <p>Bulk Soil Density: {data.bulk_soil_density}</p>
-                    <p>Precipitation: {data.precip}</p>
-                    {/* Add more fields as needed */}
-                  </li>
-                ))
-              ) : (
-                <li>No soil moisture data available</li>
-              )}
+              {soilMoistureData && soilMoistureData.data ? (
+  <li>
+    <p>Bulk Soil Density: {soilMoistureData.data.bulk_soil_density}</p>
+    <p>Precipitation: {soilMoistureData.data.precip}</p>
+    <p>Soilm_0_10cm: {soilMoistureData.data.soilm_0_10cm}</p>
+    <p>Soilm_100_200cm: {soilMoistureData.data.soilm_100_200cm}</p>
+    <p>Soilt_10_40cm: {soilMoistureData.data.soilt_10_40cm}</p>
+    <p>Soilt_40_100cm: {soilMoistureData.data.soilt_40_100cm}</p>
+    <p>Specific humidity: {soilMoistureData.data.specific_humidity}</p>
+    <p>Soil average temp: {soilMoistureData.data.temp_2m_avg}</p>
+  </li>
+) : (
+  <li>No soil moisture data available</li>
+)}
             </ul>
           </li>
         )}
 
         {/* Historical Weather Data */}
-        {searchQuery === 'Nairobi,Kenya' && (
+        {searchQuery === 'Current historical weather data in Kenya' && (
           <li>
             <h3>Historical Weather Data</h3>
             <ul>
@@ -227,6 +227,11 @@ const Explore = () => {
                 <li>
                   <p>Temperature: {historicalWeatherData.main.temp}°C</p>
                   <p>Humidity: {historicalWeatherData.main.humidity}%</p>
+                  <p>Pressure: {historicalWeatherData.main.pressure}%</p>
+                  <p>Wind: {historicalWeatherData.wind.speed}%</p>
+                  <p>Clouds: {historicalWeatherData.clouds.all}%</p>
+                  <p>Sea: {historicalWeatherData.main.sea_level}%</p>
+                  <p>Ground: {historicalWeatherData.main.grnd_level}%</p>
                 </li>
               ) : (
                 <li>No historical weather data available</li>
@@ -236,60 +241,54 @@ const Explore = () => {
         )}
 
         {/* Weather Alerts */}
-        {searchQuery === 'Nairobi,Kenya' && (
+        {searchQuery === 'Current weather alerts in Kenya' && (
           <li>
             <h3>Weather Alerts</h3>
             <ul>
-              {weatherAlerts && weatherAlerts.alerts && weatherAlerts.alerts.length > 0 ? (
-                weatherAlerts.alerts.map((alert, index) => (
-                  <li key={index}>
-                    <p>Description: {alert.description}</p>
-                    <p>Severity: {alert.severity}</p>
-                  </li>
-                ))
-              ) : (
-                <li>No weather alerts data available</li>
-              )}
+              {weatherAlerts && weatherAlerts.alerts? (
+  <li>
+    <p>Description: {weatherAlerts.alerts.description}</p>
+    <p>Severity: {weatherAlerts.alerts.severity}</p>
+  </li>
+) : (
+  <li>No weather alerts data available</li>
+)}
             </ul>
           </li>
         )}
 
 
         {/* Market Trends */}
-        {searchQuery === 'Nairobi,Kenya' && (
+        {searchQuery === 'Current market price trends' && (
           <li>
             <h3>Market Trends</h3>
             <ul>
-              {marketTrends && marketTrends.county && marketTrends.county.length > 0 ? (
-                marketTrends.county.map((county, index) => (
-                  <li key={index}>
-                    <p>County: {county.name}</p>
-                    {/* Display more fields if available */}
-                  </li>
-                ))
-              ) : (
-                <li>No market trends data available</li>
-              )}
+              {marketTrends && marketTrends.county ? (
+  <li>
+    <p>County: {marketTrends.county.name}</p>
+    {/* Display more fields if available */}
+  </li>
+) : (
+  <li>No market trends data available</li>
+)}
             </ul>
           </li>
         )}
 
 
         {/* Weather Predictions */}
-        {searchQuery === 'Nairobi,Kenya' && (
+        {searchQuery === 'Current weather predictions in Kenya' && (
           <li>
             <h3>Weather Predictions</h3>
             <ul>
-              {weatherPredictions && weatherPredictions.data && weatherPredictions.data.length > 0 ? (
-                weatherPredictions.data.map((prediction, index) => (
-                  <li key={index}>
-                    <p>Prediction: {prediction.prediction}</p>
-                    {/* Display more fields if available */}
-                  </li>
-                ))
-              ) : (
-                <li>No weather predictions data available</li>
-              )}
+             {weatherPredictions && weatherPredictions.data ? (
+  <li>
+    <p>Prediction: {weatherPredictions.data.temp}</p>
+    {/* Display more fields if available */}
+  </li>
+) : (
+  <li>No weather predictions data available</li>
+)}
             </ul>
           </li>
         )}

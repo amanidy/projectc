@@ -86,13 +86,13 @@ router.post("/forgotPassword",  async (req, res) => {
         var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'amaniarnold08@gmail.com',
-    pass: 'uorz ucbc syyg ywum'
+    user: process.env.gmailuseruser,
+    pass: process.env.gmailpass
   }
 });
 
 var mailOptions = {
-  from: 'amaniarnold08@gmail.com',
+  from: process.env.gmailuser,
   to: email,
   subject: 'Reset Password',
   text: `Click the following link to reset your password: http://localhost:5000/resetPassword/${token}` //check valid url here
@@ -267,7 +267,7 @@ router.get('/search', async (req, res) => {
       weatherAlerts: weatherAlertsResponse.data,
       marketTrends: marketTrendsResponse.data,
       weatherPredictions: weatherPredictionsResponse.data
-    };
+    }; 
 
     res.json(searchData);
   } catch (error) {
