@@ -200,20 +200,21 @@ const Explore = () => {
           <li>
             <h3>Soil Moisture Data</h3>
             <ul>
-              {soilMoistureData && soilMoistureData.data ? (
-  <li>
-    <p>Bulk Soil Density: {soilMoistureData.data.bulk_soil_density}</p>
-    <p>Precipitation: {soilMoistureData.data.precip}</p>
-    <p>Soilm_0_10cm: {soilMoistureData.data.soilm_0_10cm}</p>
-    <p>Soilm_100_200cm: {soilMoistureData.data.soilm_100_200cm}</p>
-    <p>Soilt_10_40cm: {soilMoistureData.data.soilt_10_40cm}</p>
-    <p>Soilt_40_100cm: {soilMoistureData.data.soilt_40_100cm}</p>
-    <p>Specific humidity: {soilMoistureData.data.specific_humidity}</p>
-    <p>Soil average temp: {soilMoistureData.data.temp_2m_avg}</p>
-  </li>
+              {soilMoistureData && soilMoistureData.data && soilMoistureData.data.length > 0 ? (
+  <ul>
+    <li>Bulk Soil Density: {[...new Set(soilMoistureData.data.map(data => data.bulk_soil_density))].join(', ')}</li>
+    <li>Precipitation: {[...new Set(soilMoistureData.data.map(data => data.precip))].join(', ')}</li>
+    <li>Soilm_0_10cm: {[...new Set(soilMoistureData.data.map(data => data.soilm_0_10cm))].join(', ')}</li>
+    <li>Soilm_100_200cm: {[...new Set(soilMoistureData.data.map(data => data.soilm_100_200cm))].join(', ')}</li>
+    <li>Soilt_10_40cm: {[...new Set(soilMoistureData.data.map(data => data.soilt_10_40cm))].join(', ')}</li>
+    <li>Soilt_40_100cm: {[...new Set(soilMoistureData.data.map(data => data.soilt_40_100cm))].join(', ')}</li>
+    <li>Specific humidity: {[...new Set(soilMoistureData.data.map(data => data.specific_humidity))].join(', ')}</li>
+    <li>Soil average temp: {[...new Set(soilMoistureData.data.map(data => data.temp_2m_avg))].join(', ')}</li>
+  </ul>
 ) : (
   <li>No soil moisture data available</li>
 )}
+
             </ul>
           </li>
         )}
