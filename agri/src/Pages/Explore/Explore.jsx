@@ -226,12 +226,12 @@ const Explore = () => {
               {historicalWeatherData && historicalWeatherData.main ? (
                 <li>
                   <p>Temperature: {historicalWeatherData.main.temp}°C</p>
-                  <p>Humidity: {historicalWeatherData.main.humidity}%</p>
-                  <p>Pressure: {historicalWeatherData.main.pressure}%</p>
-                  <p>Wind: {historicalWeatherData.wind.speed}%</p>
+                  <p>Humidity: {historicalWeatherData.main.humidity}g/m³</p>
+                  <p>Pressure: {historicalWeatherData.main.pressure}Pa</p>
+                  <p>Wind: {historicalWeatherData.wind.speed}m/s</p>
                   <p>Clouds: {historicalWeatherData.clouds.all}%</p>
-                  <p>Sea: {historicalWeatherData.main.sea_level}%</p>
-                  <p>Ground: {historicalWeatherData.main.grnd_level}%</p>
+                  <p>Sea: {historicalWeatherData.main.sea_level}m</p>
+                  <p>Ground: {historicalWeatherData.main.grnd_level}m</p>
                 </li>
               ) : (
                 <li>No historical weather data available</li>

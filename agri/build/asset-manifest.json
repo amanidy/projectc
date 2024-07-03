@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/agrisense/static/css/main.1174b011.css",
-    "main.js": "/agrisense/static/js/main.02ad8546.js",
+    "main.css": "/agrisense/static/css/main.1cfcee80.css",
+    "main.js": "/agrisense/static/js/main.f83f1179.js",
     "static/js/453.0e9c1d77.chunk.js": "/agrisense/static/js/453.0e9c1d77.chunk.js",
     "static/media/agrivideo.mp4": "/agrisense/static/media/agrivideo.3ab229b9a8af3a80b8ef.mp4",
     "static/media/pexels-skyriusmarketing-2129819.jpg": "/agrisense/static/media/pexels-skyriusmarketing-2129819.128fafef23e08e08d7f1.jpg",
@@ -10,19 +10,19 @@
     "static/media/fa-solid-900.woff2": "/agrisense/static/media/fa-solid-900.4d986b00ff9ca3828fbd.woff2",
     "static/media/fa-brands-400.woff2": "/agrisense/static/media/fa-brands-400.455ea818179b4def0c43.woff2",
     "static/media/fa-regular-400.ttf": "/agrisense/static/media/fa-regular-400.eb91f7b948a42799f678.ttf",
-    "static/media/agrisense-high-resolution-logo-black-transparent.png": "/agrisense/static/media/agrisense-high-resolution-logo-black-transparent.17ec05153e9df048a3eb.png",
     "static/media/plant.jpg": "/agrisense/static/media/plant.5b2a85463d7e5d9a243f.jpg",
     "static/media/plant2.jpg": "/agrisense/static/media/plant2.9899a2c4e3d1e6a89a71.jpg",
     "static/media/fa-regular-400.woff2": "/agrisense/static/media/fa-regular-400.21cb8f55d8e0c5b89751.woff2",
     "static/media/fa-v4compatibility.ttf": "/agrisense/static/media/fa-v4compatibility.c8e090db312b0bea2aa2.ttf",
+    "static/media/logo-icon.svg": "/agrisense/static/media/logo-icon.d172718320a17736bbfa5323d4fe0b33.svg",
     "static/media/fa-v4compatibility.woff2": "/agrisense/static/media/fa-v4compatibility.cf7f5903d06b79ad60f1.woff2",
     "index.html": "/agrisense/index.html",
-    "main.1174b011.css.map": "/agrisense/static/css/main.1174b011.css.map",
-    "main.02ad8546.js.map": "/agrisense/static/js/main.02ad8546.js.map",
+    "main.1cfcee80.css.map": "/agrisense/static/css/main.1cfcee80.css.map",
+    "main.f83f1179.js.map": "/agrisense/static/js/main.f83f1179.js.map",
     "453.0e9c1d77.chunk.js.map": "/agrisense/static/js/453.0e9c1d77.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.1174b011.css",
-    "static/js/main.02ad8546.js"
+    "static/css/main.1cfcee80.css",
+    "static/js/main.f83f1179.js"
   ]
 }
