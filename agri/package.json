@@ -16,6 +16,7 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.23.1",
     "react-scripts": "5.0.1",
+    "typed.js": "^2.1.0",
     "typescript": "^5.4.5",
     "vite": "^5.2.13",
     "web-vitals": "^2.1.4"

@@ -1,10 +1,31 @@
 import React, { useEffect, useState } from 'react';
+import Typed from 'typed.js';
 import Axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import sampleCrops from './CropsData';
 import './Explore.css';
 
 const Explore = () => {
+
+  const handleType = React.useRef(null);
+
+  React.useEffect(() => {
+    const typed = new Typed(handleType.current, {
+      strings: ['Current soil moisture levels in Kenya',
+        '&amp; a Current historical weather data in Kenya',
+        'Current weather alerts in Kenya',
+        'Current market price trends',
+        'Current weather predictions in Kenya'
+      ],
+      typeSpeed: 50,
+    });
+
+    return () => {
+      // Destroy Typed instance during cleanup to stop animation
+      typed.destroy();
+    };
+  }, []);
+
   const [soilMoistureData, setSoilMoistureData] = useState([]);
   const [historicalWeatherData, setHistoricalWeatherData] = useState([]);
   const [weatherAlerts, setWeatherAlerts] = useState([]);
@@ -78,6 +99,7 @@ const Explore = () => {
   }, []);
 
   useEffect(() => {
+
     const fetchSearchResults = async () => {
       if (searchQuery) {
         try {
@@ -191,9 +213,13 @@ const Explore = () => {
           </ul>
         </div>
       )}
+
+
     <div className='key-features'>
       <h2>Key Features</h2>
-      <p>Enter your search query for results</p>
+        <div className='text2'> Search Query:
+          <span className='typer'  ref={handleType}/>
+        </div>
 </div>
 
       <ul>

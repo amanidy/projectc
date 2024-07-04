@@ -135,3 +135,15 @@
   background-color: #dc3545;
   color: white;
 }
+
+.text2{
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.typer{
+  overflow: hidden;
+  color: #fff;
+  font-size: 2.6rem;
+  text-shadow: 0 0 10px cyan,0 0 20px cyan,0 0 30px cyan;
+}
