@@ -191,8 +191,11 @@ const Explore = () => {
           </ul>
         </div>
       )}
-    
-    <h2>Key Features</h2>
+    <div className='key-features'>
+      <h2>Key Features</h2>
+      <p>Enter your search query for results</p>
+</div>
+
       <ul>
         {/* Soil Moisture Data */}
 
@@ -200,16 +203,16 @@ const Explore = () => {
           <li>
             <h3>Soil Moisture Data</h3>
             <ul>
-              {soilMoistureData && soilMoistureData.data && soilMoistureData.data.length > 0 ? (
+              {soilMoistureData && soilMoistureData.data && soilMoistureData.data.length > 0? (
   <ul>
-    <li>Bulk Soil Density: {[...new Set(soilMoistureData.data.map(data => data.bulk_soil_density))].join(', ')}</li>
-    <li>Precipitation: {[...new Set(soilMoistureData.data.map(data => data.precip))].join(', ')}</li>
-    <li>Soilm_0_10cm: {[...new Set(soilMoistureData.data.map(data => data.soilm_0_10cm))].join(', ')}</li>
-    <li>Soilm_100_200cm: {[...new Set(soilMoistureData.data.map(data => data.soilm_100_200cm))].join(', ')}</li>
-    <li>Soilt_10_40cm: {[...new Set(soilMoistureData.data.map(data => data.soilt_10_40cm))].join(', ')}</li>
-    <li>Soilt_40_100cm: {[...new Set(soilMoistureData.data.map(data => data.soilt_40_100cm))].join(', ')}</li>
-    <li>Specific humidity: {[...new Set(soilMoistureData.data.map(data => data.specific_humidity))].join(', ')}</li>
-    <li>Soil average temp: {[...new Set(soilMoistureData.data.map(data => data.temp_2m_avg))].join(', ')}</li>
+    <li>Bulk Soil Density: {soilMoistureData.data[0].bulk_soil_density}</li>
+    <li>Precipitation: {soilMoistureData.data[0].precip}</li>
+    <li>Soilm_0_10cm: {soilMoistureData.data[0].soilm_0_10cm}</li>
+    <li>Soilm_100_200cm: {soilMoistureData.data[0].soilm_100_200cm}</li>
+    <li>Soilt_10_40cm: {soilMoistureData.data[0].soilt_10_40cm}</li>
+    <li>Soilt_40_100cm: {soilMoistureData.data[0].soilt_40_100cm}</li>
+    <li>Specific humidity: {soilMoistureData.data[0].specific_humidity}</li>
+    <li>Soil average temp: {soilMoistureData.data[0].temp_2m_avg}</li>
   </ul>
 ) : (
   <li>No soil moisture data available</li>
@@ -249,7 +252,7 @@ const Explore = () => {
               {weatherAlerts && weatherAlerts.alerts? (
   <li>
     <p>Description: {weatherAlerts.alerts.description}</p>
-    <p>Severity: {weatherAlerts.alerts.severity}</p>
+    <p>City_name: {weatherAlerts.city_name}</p>
   </li>
 ) : (
   <li>No weather alerts data available</li>
@@ -266,7 +269,10 @@ const Explore = () => {
             <ul>
               {marketTrends && marketTrends.county ? (
   <li>
-    <p>County: {marketTrends.county.name}</p>
+                  <p>County: {marketTrends.county[0].name}</p>
+                  <p>Avocado Price:{marketTrends.items_specify[113].name}</p>
+                  <p>Maize Price:{marketTrends.items_specify[121].name}</p>
+                  <p>Tomato Price:{ marketTrends.items_specify[129].name}</p>
     {/* Display more fields if available */}
   </li>
 ) : (
@@ -282,13 +288,13 @@ const Explore = () => {
           <li>
             <h3>Weather Predictions</h3>
             <ul>
-             {weatherPredictions && weatherPredictions.data ? (
-  <li>
-    <p>Prediction: {weatherPredictions.data.temp}</p>
-    {/* Display more fields if available */}
-  </li>
+            {weatherPredictions && weatherPredictions.data && weatherPredictions.data.length > 0? (
+  <ul>
+    <li>precipitation: {weatherPredictions.data[0].temp}</li>
+    
+  </ul>
 ) : (
-  <li>No weather predictions data available</li>
+  <li>No weather prediction data available</li>
 )}
             </ul>
           </li>
